@@ -1,0 +1,599 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEMFAM Forum Constitution 2026-2027</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dustyPink: '#8A4F58',      /* Primary dark rose/pink for readable text & headers */
+                        coral: '#E07A5F',          /* Vibrant coral accent */
+                        coralDark: '#C9644A',      /* Deeper coral for buttons and hover states */
+                        warmBeige: '#F6F3EC',      /* Main soft background warm beige */
+                        cardBeige: '#EFEAE0',      /* Slightly deeper beige for card highlights */
+                        lightPink: '#F9ECEE',      /* Light dusty pink tint for background blocks */
+                        textDark: '#3A3335',       /* Charcoal brown text for high readability and premium feel */
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #3A3335;
+        }
+        .header-title {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom print styling to ensure beautiful paper formatting */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 11pt;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-page-break {
+                page-break-before: always;
+            }
+            .shadow-lg, .shadow-xl {
+                box-shadow: none !important;
+            }
+            .rounded-2xl, .rounded-xl {
+                border-radius: 0 !important;
+            }
+            .border-dustyPink {
+                border-color: #8A4F58 !important;
+            }
+            .bg-warmBeige, .bg-lightPink, .bg-cardBeige {
+                background-color: #F6F3EC !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .document-container {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-stone-100 min-h-screen py-8 px-4 md:px-8 print:p-0 print:bg-white">
+
+    <!-- TOP CONTROL BAR (HIDDEN IN PRINT) -->
+    <div class="max-w-4xl mx-auto mb-6 no-print flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl shadow-md border border-stone-200">
+        <div class="text-center sm:text-left">
+            <h2 class="text-xs font-bold text-stone-500 uppercase tracking-widest">EO FemFam Companion</h2>
+            <p class="text-xs text-stone-400">Print or save the newly styled document</p>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="window.print()" class="bg-dustyPink hover:bg-[#723E45] text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow transition-all duration-200 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                Print / Save as PDF
+            </button>
+            <button onclick="toggleCalculator()" class="bg-coral hover:bg-coralDark text-white px-5 py-2.5 rounded-lg text-sm font-semibold shadow transition-all duration-200 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                Late Penalty Calculator
+            </button>
+        </div>
+    </div>
+
+    <!-- TARDINESS CALCULATOR POPUP (HIDDEN BY DEFAULT & NEVER PRINTED) -->
+    <div id="calculator-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-stone-100 overflow-hidden">
+            <div class="bg-dustyPink p-5 text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg flex items-center gap-2 font-serif">
+                    <span>⏱️</span> Late Penalty Calculator
+                </h3>
+                <button onclick="toggleCalculator()" class="text-white/85 hover:text-white text-2xl font-semibold">&times;</button>
+            </div>
+            <div class="p-6">
+                <div class="mb-5">
+                    <label for="minutes-late" class="block text-sm font-medium text-stone-700 mb-2">Minutes Late:</label>
+                    <input type="number" id="minutes-late" placeholder="Enter minutes..." oninput="calculateLatePenalty()" class="w-full px-4 py-3 border border-stone-200 rounded-xl focus:ring-2 focus:ring-dustyPink focus:outline-none text-lg">
+                </div>
+                
+                <div class="space-y-4 bg-stone-50 p-4 rounded-xl border border-stone-100">
+                    <div class="flex justify-between items-center">
+                        <span class="text-stone-600 text-sm font-medium">Fine Amount:</span>
+                        <span id="calc-fine" class="text-2xl font-bold text-coral">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-stone-600 text-sm font-medium">Absence Status:</span>
+                        <span id="calc-absence" class="font-bold text-dustyPink">None</span>
+                    </div>
+                    <div class="text-xs text-stone-500 mt-2 italic leading-relaxed border-t border-stone-200 pt-2" id="calc-note">
+                        * Under 10 minutes is a grace period. After that, it is $100/min up to a max of $500. Over 30 mins is 0.5 absence. Over 1 hour is a full absence.
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-stone-100 text-right">
+                <button onclick="toggleCalculator()" class="bg-stone-600 hover:bg-stone-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONSTITUTION CONTAINER -->
+    <main class="document-container max-w-4xl mx-auto bg-white p-8 md:p-16 rounded-2xl shadow-xl border border-stone-100 print:border-none print:shadow-none print:p-0">
+        
+        <!-- COVER HEADER -->
+        <header class="text-center pb-10 border-b-2 border-dustyPink/20">
+            <h1 class="header-title text-4xl md:text-5xl font-bold text-dustyPink uppercase tracking-wider mb-2">FEMFAM</h1>
+            <p class="text-coral text-md md:text-lg font-semibold tracking-widest uppercase mb-4">Forum Constitution & Guidelines</p>
+            <div class="inline-block bg-warmBeige border border-coral/30 rounded-full px-6 py-1.5 text-xs text-dustyPink font-bold uppercase tracking-widest">
+                Fiscal Year: July 1, 2026 – June 30, 2027
+            </div>
+        </header>
+
+        <!-- THEMES & CORE FOCUS -->
+        <section class="py-10">
+            <div class="bg-lightPink border-l-4 border-dustyPink rounded-r-xl p-6 md:p-8 shadow-sm">
+                <h2 class="text-xs uppercase tracking-widest text-dustyPink font-bold mb-4">Our Focus & Direction</h2>
+                <h3 class="header-title text-2xl text-dustyPink font-semibold mb-4">Theme for 2026-2027</h3>
+                <ol class="space-y-4 text-textDark">
+                    <li class="flex gap-4 items-start">
+                        <span class="bg-coral text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">1</span>
+                        <span class="font-semibold text-lg text-textDark/90">Strengthening relationships with spouse and parents</span>
+                    </li>
+                    <li class="flex gap-4 items-start">
+                        <span class="bg-coral text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shrink-0 mt-0.5">2</span>
+                        <span class="font-semibold text-lg text-textDark/90">Overcoming our own insecurities</span>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- VISION & MISSION -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-10 border-b border-stone-100">
+            <div class="bg-warmBeige border border-stone-200/50 rounded-xl p-6">
+                <h3 class="text-xs uppercase tracking-widest text-coral font-bold mb-2">Our Vision</h3>
+                <p class="text-textDark leading-relaxed italic text-sm">
+                    "To make value from this forum, understand different stages of life and be able to achieve something that we want to achieve as individuals and together as a Forum."
+                </p>
+            </div>
+            <div class="bg-warmBeige border border-stone-200/50 rounded-xl p-6">
+                <h3 class="text-xs uppercase tracking-widest text-coral font-bold mb-2">Our Mission</h3>
+                <p class="text-textDark leading-relaxed italic text-sm">
+                    "To share, freely learn and grow personally and professionally as individuals and together in a safe environment. To treasure and to make reflections in order to improve on our weaknesses."
+                </p>
+            </div>
+        </section>
+
+        <!-- ROLES & RESPONSIBILITIES -->
+        <section class="py-10">
+            <h2 class="header-title text-2xl text-dustyPink font-semibold mb-6 flex items-center gap-3">
+                <span class="text-coral">✦</span> Forum Positions & Structure
+            </h2>
+            <div class="overflow-x-auto rounded-xl border border-stone-200/80">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-dustyPink text-white text-sm">
+                            <th class="p-4 font-semibold">Position</th>
+                            <th class="p-4 font-semibold">Sister</th>
+                            <th class="p-4 font-semibold">Scope of Responsibility</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-100 text-sm text-textDark">
+                        <tr class="hover:bg-warmBeige/50">
+                            <td class="p-4 font-semibold text-dustyPink">Moderator</td>
+                            <td class="p-4 font-bold text-stone-800">Michelle Chiu</td>
+                            <td class="p-4 text-stone-600">Leads meetings, manages agenda focus, and coordinates forum discussions.</td>
+                        </tr>
+                        <tr class="hover:bg-warmBeige/50">
+                            <td class="p-4 font-semibold text-dustyPink">Parking Lot</td>
+                            <td class="p-4 font-bold text-stone-800">Rebecca Yu</td>
+                            <td class="p-4 text-stone-600">Manages the parking lot topics and notes details for future deep dives.</td>
+                        </tr>
+                        <tr class="hover:bg-warmBeige/50">
+                            <td class="p-4 font-semibold text-dustyPink">Retreat Planners</td>
+                            <td class="p-4 font-bold text-stone-800">Amanda Woo <span class="text-stone-400 font-normal">&amp;</span> Katrina Fung</td>
+                            <td class="p-4 text-stone-600">Determines location, handles budget locks, activities, and coordinates planning timelines.</td>
+                        </tr>
+                        <tr class="hover:bg-warmBeige/50">
+                            <td class="p-4 font-semibold text-dustyPink">Events Chair</td>
+                            <td class="p-4 font-bold text-stone-800">Priscilla Hung</td>
+                            <td class="p-4 text-stone-600">Coordinates scheduled meetings, keeps track of funds, accounts, and payments.</td>
+                        </tr>
+                        <tr class="hover:bg-warmBeige/50">
+                            <td class="p-4 font-semibold text-dustyPink">Family/Social Connector</td>
+                            <td class="p-4 font-bold text-stone-800">Carrie Leung</td>
+                            <td class="p-4 text-stone-600">Bridges the gap for joint family gatherings, outings, and spouse socialization.</td>
+                        </tr>
+                        <tr class="hover:bg-warmBeige/50">
+                            <td class="p-4 font-semibold text-dustyPink">Sunshine Chair</td>
+                            <td class="p-4 font-bold text-stone-800">Lorinda Kwok</td>
+                            <td class="p-4 text-stone-600">Arranges support during milestones, coordinates warm gestures, and manages community care.</td>
+                        </tr>
+                        <tr class="hover:bg-warmBeige/50">
+                            <td class="p-4 font-semibold text-dustyPink">Gestalt Police</td>
+                            <td class="p-4 font-bold text-stone-800">All Members</td>
+                            <td class="p-4 italic text-stone-500">An organic duty shared by everyone to ensure we share only from our own direct experiences.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4 text-xs text-stone-400 flex items-center gap-2 font-medium">
+                <span>📍</span> Group Size: Currently 7 Ladies (Max Cap: 8).
+            </div>
+        </section>
+
+        <!-- PRINT PAGE BREAK -->
+        <div class="print-page-break"></div>
+
+        <!-- MEETING GUIDELINES -->
+        <section class="py-10 border-t border-stone-100">
+            <h2 class="header-title text-2xl text-dustyPink font-semibold mb-6 flex items-center gap-3">
+                <span class="text-coral">✦</span> Meeting Guidelines & Cadence
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="bg-warmBeige p-5 rounded-xl border border-coral/10">
+                        <h4 class="font-bold text-dustyPink text-sm mb-2 uppercase tracking-wider">Meetings Frequency</h4>
+                        <p class="text-textDark text-sm leading-relaxed">
+                            Minimum of <strong>6 meetings per year</strong>. The standard schedule operates on a <strong>1.5 to 2 month cadence</strong>.
+                        </p>
+                    </div>
+                    <div class="bg-warmBeige p-5 rounded-xl border border-coral/10">
+                        <h4 class="font-bold text-dustyPink text-sm mb-2 uppercase tracking-wider">Retreat Commitments</h4>
+                        <ul class="text-textDark text-sm space-y-2">
+                            <li>🌴 <strong>Mini Retreat:</strong> One 12-hour session (including dinner) every 12 months.</li>
+                            <li>✈️ <strong>Full Retreat:</strong> One 2-full day onsite retreat (excluding travel) every 18 months.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-warmBeige p-5 rounded-xl border border-coral/10">
+                        <h4 class="font-bold text-dustyPink text-sm mb-2 uppercase tracking-wider">Electronics & Devices</h4>
+                        <p class="text-textDark text-sm leading-relaxed">
+                            <strong>Strictly no cell phones or beepers</strong> are permitted during forum meetings or retreats except during designated times or pre-approved exceptions.
+                        </p>
+                    </div>
+                    <div class="bg-warmBeige p-5 rounded-xl border border-coral/10">
+                        <h4 class="font-bold text-dustyPink text-sm mb-2 uppercase tracking-wider">Drinks & Dining Rules</h4>
+                        <p class="text-textDark text-sm leading-relaxed">
+                            <strong>No alcohol is permitted</strong> during or immediately before standard meetings. During retreats, alcohol is limited strictly to designated evening times.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-stone-50 p-4 rounded-xl text-xs text-stone-500 leading-relaxed border border-stone-200/50">
+                📢 <strong>Virtual Exception:</strong> Zoom virtual meetings are allowed strictly based on <em>unanimous prior consent</em> of all members under exceptional, unique circumstances. 
+                <br>🚨 <strong>Emergency Meetings:</strong> Members facing deep crises can trigger an Emergency Forum. Attendance is voluntary but encouraged.
+            </div>
+        </section>
+
+        <!-- CONFIDENTIALITY PROTOCOL -->
+        <section class="py-10 border-t border-stone-100">
+            <h2 class="header-title text-2xl text-dustyPink font-semibold mb-6 flex items-center gap-3">
+                <span class="text-coral">✦</span> Confidentiality Policy
+            </h2>
+            <p class="text-sm text-stone-600 mb-4 leading-relaxed">
+                Our safety relies on strict compliance. Confidences begin the exact second a meeting is called to order (pre-and-post informal chats are excluded) and applies strictly to verbal disclosures, not behavior.
+            </p>
+
+            <div class="space-y-4">
+                <div class="border border-stone-100 rounded-xl p-4 bg-lightPink/50 flex gap-4 items-start">
+                    <span class="text-xl shrink-0">🟠</span>
+                    <div>
+                        <h4 class="font-bold text-dustyPink text-sm">Level 1: Default Confidentiality</h4>
+                        <p class="text-xs text-stone-600 leading-relaxed">Everything spoken remains entirely within the forum. Late members can receive updates, but no external sharing is permitted.</p>
+                    </div>
+                </div>
+                <div class="border border-stone-100 rounded-xl p-4 bg-lightPink/50 flex gap-4 items-start">
+                    <span class="text-xl shrink-0">🟡</span>
+                    <div>
+                        <h4 class="font-bold text-dustyPink text-sm">Level 2: Sensitive Disclosures</h4>
+                        <p class="text-xs text-stone-600 leading-relaxed">Includes highly sensitive materials. No discussions or casual reminders are allowed without the active presence of the sharing member.</p>
+                    </div>
+                </div>
+                <div class="border border-stone-100 rounded-xl p-4 bg-lightPink/50 flex gap-4 items-start">
+                    <span class="text-xl shrink-0">🔴</span>
+                    <div>
+                        <h4 class="font-bold text-dustyPink text-sm">Level 3: Ultimate Restriction</h4>
+                        <p class="text-xs text-stone-600 leading-relaxed">The topic is strictly vault-locked. Never mention or reference the matter again under any context unless initiated by the original owner.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-rose-50 border border-rose-100 p-4 rounded-xl text-xs text-rose-800 leading-relaxed">
+                ⚠️ <strong>Breaches & Resolution:</strong> Any leak must immediately be shared with the Moderator. If unresolved, it will be brought to the next meeting. A leak triggers an automatic resignation. Reinstatement requires a <em>unanimous yes vote</em>.
+            </div>
+        </section>
+
+        <!-- PRINT PAGE BREAK -->
+        <div class="print-page-break"></div>
+
+        <!-- COMMITMENT & PENALTIES -->
+        <section class="py-10 border-t border-stone-100">
+            <h2 class="header-title text-2xl text-dustyPink font-semibold mb-6 flex items-center gap-3">
+                <span class="text-coral">✦</span> Attendance & Penalties
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="bg-rose-50/40 border border-rose-100 p-5 rounded-xl">
+                        <h3 class="font-bold text-rose-900 text-md mb-2 flex items-center gap-2">
+                            <span>❌</span> Absence Penalties
+                        </h3>
+                        <p class="text-sm text-rose-800 leading-relaxed mb-3">
+                            Any unexcused absence results in an immediate <strong>$500 penalty fine</strong>.
+                        </p>
+                        <p class="text-xs text-rose-700 font-medium">
+                            ⚠️ Missing two meetings or one retreat within a fiscal year triggers an automatic removal from the forum. Reinstatement requires a unanimous vote.
+                        </p>
+                    </div>
+
+                    <div class="bg-warmBeige border border-stone-200 p-5 rounded-xl">
+                        <h3 class="font-bold text-dustyPink text-md mb-2 flex items-center gap-2">
+                            <span>📅</span> Rescheduling & Date Changes
+                        </h3>
+                        <p class="text-xs text-textDark leading-relaxed mb-2">
+                            <strong>Meetings:</strong> 1 free pass per year. Date changes need <strong>3 days prior notice</strong> & unanimous consent. Requester must re-coordinate a date within 48 hours.
+                        </p>
+                        <p class="text-xs text-textDark leading-relaxed">
+                            <strong>Retreats:</strong> Retreat planner sets deadlines. Date modifications require unanimous consent, coordination within 48 hours, and must be held within 2 months of the target.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-stone-50 border border-stone-150 p-5 rounded-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-stone-800 text-md mb-3 flex items-center gap-2">
+                            <span>⏱️</span> Tardiness Penalties
+                        </h3>
+                        <p class="text-xs text-stone-600 leading-relaxed mb-4">
+                            Start times are strictly linked to the timekeeper's clock.
+                        </p>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between border-b border-stone-200 pb-1.5">
+                                <span class="font-medium text-stone-700">0 - 10 Minutes:</span>
+                                <span class="text-emerald-600 font-semibold">Grace Period</span>
+                            </div>
+                            <div class="flex justify-between border-b border-stone-200 pb-1.5">
+                                <span class="font-medium text-stone-700">11 - 30 Minutes:</span>
+                                <span class="text-coral font-bold">$100 per minute (Max $500)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-stone-200 pb-1.5">
+                                <span class="font-medium text-stone-700">Over 30 Minutes:</span>
+                                <span class="text-rose-600 font-semibold">0.5 Absence + Time Penalty</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="font-medium text-stone-700">Over 1 Hour:</span>
+                                <span class="text-rose-700 font-bold">1 Full Absence ($500 Fine)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-stone-200 text-xs text-stone-400 italic">
+                        * All fines must be paid into the Forum Fund managed by the treasurer within 1 month.
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXCEPTIONS -->
+            <div class="mt-6 bg-stone-50 border border-stone-200/60 p-4 rounded-xl">
+                <h4 class="text-xs font-bold text-stone-800 uppercase mb-2">Excusable Exceptions (No Penalty):</h4>
+                <ol class="list-decimal pl-5 text-xs text-stone-600 space-y-2">
+                    <li><strong>Medical Emergencies:</strong> Sudden physical hospitalization or urgent clinic admittance of the member or immediate family on the scheduled day, provided they update the Moderator prior/during.</li>
+                    <li><strong>Severe Travel Disruptions:</strong> Unexpected, extreme air/ground transit gridlocks where no public transit alternative is reasonably accessible.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- PRINT PAGE BREAK -->
+        <div class="print-page-break"></div>
+
+        <!-- PROTOCOLS, MEMBERSHIP & FINANCE -->
+        <section class="py-10 border-t border-stone-100">
+            <h2 class="header-title text-2xl text-dustyPink font-semibold mb-6 flex items-center gap-3">
+                <span class="text-coral">✦</span> Protocols & Finances
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-4 bg-warmBeige rounded-xl border border-stone-200/50">
+                    <h3 class="font-bold text-sm text-dustyPink mb-2">🗣️ Gestalt Protocol</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        We strictly share from direct personal experience only. We avoid providing explicit commands, lecturing, or direct advice.
+                    </p>
+                </div>
+                <div class="p-4 bg-warmBeige rounded-xl border border-stone-200/50">
+                    <h3 class="font-bold text-sm text-dustyPink mb-2">🍽️ Meals & Budgets</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        All bills split evenly at the end of meetings.
+                        <br>• Lunch target: ~$500
+                        <br>• Dinner target: ~$1,500
+                    </p>
+                </div>
+                <div class="p-4 bg-warmBeige rounded-xl border border-stone-200/50">
+                    <h3 class="font-bold text-sm text-dustyPink mb-2">✈️ Retreat Caps</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Determined via blind bids. Each member secretly writes down a cap; the lowest specified value becomes the group budget.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-4 bg-amber-50/50 border border-amber-100 p-4 rounded-xl text-xs text-amber-800 leading-relaxed">
+                👉 <strong>EO Spouse Rule:</strong> If a member's spouse is no longer a member of EO, that member will automatically resign from the forum. 
+                <br>👉 <strong>Romantic Rules:</strong> No romantic relationships are allowed inside the forum. Violation results in requested resignations or forum removal.
+            </div>
+        </section>
+
+        <!-- AGREEMENT AND SIGNATURES -->
+        <section class="py-10 border-t border-stone-100">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <p class="header-title text-xl text-dustyPink font-semibold italic mb-3">"I agree to uphold this forum constitution at all times."</p>
+                <p class="text-xs text-stone-500 leading-relaxed">
+                    By signing, we commit to the safe preservation, sisterhood, and procedural integrity of the FEMFAM forum.
+                </p>
+            </div>
+
+            <!-- SIGNATURE GRIDS (DESIGNED FOR EXACTLY 7 LADIES) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-6">
+                <!-- Michelle -->
+                <div class="border-t border-stone-300 pt-3">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-bold text-stone-800">Michelle Chiu</span>
+                        <span class="text-xs text-coral font-bold uppercase tracking-wider">Moderator</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-400">
+                        <span>Sig: ____________________</span>
+                        <span>Date: ____________</span>
+                    </div>
+                </div>
+
+                <!-- Rebecca -->
+                <div class="border-t border-stone-300 pt-3">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-bold text-stone-800">Rebecca Yu</span>
+                        <span class="text-xs text-coral font-bold uppercase tracking-wider">Parking Lot</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-400">
+                        <span>Sig: ____________________</span>
+                        <span>Date: ____________</span>
+                    </div>
+                </div>
+
+                <!-- Amanda -->
+                <div class="border-t border-stone-300 pt-3">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-bold text-stone-800">Amanda Woo</span>
+                        <span class="text-xs text-coral font-bold uppercase tracking-wider">Retreat Planner</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-400">
+                        <span>Sig: ____________________</span>
+                        <span>Date: ____________</span>
+                    </div>
+                </div>
+
+                <!-- Katrina -->
+                <div class="border-t border-stone-300 pt-3">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-bold text-stone-800">Katrina Fung</span>
+                        <span class="text-xs text-coral font-bold uppercase tracking-wider">Retreat Planner</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-400">
+                        <span>Sig: ____________________</span>
+                        <span>Date: ____________</span>
+                    </div>
+                </div>
+
+                <!-- Priscilla -->
+                <div class="border-t border-stone-300 pt-3">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-bold text-stone-800">Priscilla Hung</span>
+                        <span class="text-xs text-coral font-bold uppercase tracking-wider">Events Chair</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-slate-400">
+                        <span>Sig: ____________________</span>
+                        <span>Date: ____________</span>
+                    </div>
+                </div>
+
+                <!-- Carrie -->
+                <div class="border-t border-stone-300 pt-3">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-bold text-stone-800">Carrie Leung</span>
+                        <span class="text-xs text-coral font-bold uppercase tracking-wider">Family Connector</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-400">
+                        <span>Sig: ____________________</span>
+                        <span>Date: ____________</span>
+                    </div>
+                </div>
+
+                <!-- Lorinda -->
+                <div class="border-t border-stone-300 pt-3 sm:col-span-2 sm:max-w-md sm:mx-auto sm:w-full">
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-bold text-stone-800">Lorinda Kwok</span>
+                        <span class="text-xs text-coral font-bold uppercase tracking-wider">Sunshine Chair</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-400">
+                        <span>Sig: ____________________</span>
+                        <span>Date: ____________</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER NO-PRINT -->
+    <footer class="max-w-4xl mx-auto mt-8 text-center text-xs text-stone-400 py-6 no-print border-t border-stone-200">
+        FEMFAM EO Forum • Strictly Confidential • 2026-2027
+    </footer>
+
+    <!-- LOGIC SCRIPTS -->
+    <script>
+        const calcModal = document.getElementById('calculator-modal');
+        const minutesInput = document.getElementById('minutes-late');
+        const fineText = document.getElementById('calc-fine');
+        const absenceText = document.getElementById('calc-absence');
+        const noteText = document.getElementById('calc-note');
+
+        function toggleCalculator() {
+            calcModal.classList.toggle('hidden');
+            if (!calcModal.classList.contains('hidden')) {
+                minutesInput.focus();
+            }
+        }
+
+        function calculateLatePenalty() {
+            const mins = parseInt(minutesInput.value) || 0;
+            let fine = 0;
+            let absence = "None";
+            let note = "";
+
+            if (mins <= 0) {
+                fine = 0;
+                absence = "None";
+                note = "On time! No action needed.";
+            } else if (mins <= 10) {
+                fine = 0;
+                absence = "None";
+                note = "Within 10 minutes grace period. No fine applies.";
+            } else if (mins <= 30) {
+                // $100 per minute after the first 10 minutes
+                fine = (mins - 10) * 100;
+                if (fine > 500) fine = 500;
+                absence = "None";
+                note = `Fined $100 for each minute late past grace period. Current fine is $${fine}.`;
+            } else if (mins < 60) {
+                fine = 500;
+                absence = "0.5 Absence (Half Absence)";
+                note = "Late for more than 30 minutes. Counted as one-half absence and maximum late fine of $500.";
+            } else {
+                fine = 500;
+                absence = "1.0 Absence (Full Absence)";
+                note = "Late for more than 1 hour. Handled as a full absence with a $500 penalty.";
+            }
+
+            fineText.innerText = `$${fine}`;
+            absenceText.innerText = absence;
+            noteText.innerText = "* " + note;
+        }
+    </script>
+</body>
+</html>
+
+```
+
